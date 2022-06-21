@@ -1,4 +1,6 @@
 # ToDo List
+- Don't forget to star in the top right :)
  # Setup
- - We download the modules by typing `npm install`
- - Then you can run it by opening terminal and typing `node index.js`.
+ - Download the project and put it in a folder.
+ - We open a terminal and download the necessary modules. (`npm install`)
+ - Then you can run the project :) (`node index.js`)

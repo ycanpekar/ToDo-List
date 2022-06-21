@@ -1,31 +1,40 @@
-const readline = require('readline')
+const inquirer = require('inquirer')
 const low = require('lowdb')
 
-const rl = readline.createInterface(process.stdin, process.stdout);
-const FileSync = require('lowdb/adapters/FileSync');
+const FileSync = require('lowdb/adapters/FileSync')
 
 const ToDoDataAdapter = new FileSync('./databases/ToDo.json')
 const tddb = low(ToDoDataAdapter)
 
-rl.question('Welcome back sir! How can i help you?\n\nShow me the ToDo List: 1\nAdd a New item to the ToDo List: 2\nRemove an item from the ToDo List: 3\n\n', async(hcihy) => {
-    if (Number(hcihy) == 1) {
+inquirer.prompt([
+    {
+        name: 'process',
+        message: 'Welcome back sir! How can i help you?',
+        type: 'list',
+        choices: ["Show me the ToDo List", "Add a New item to the ToDo List", "Remove an item from the ToDo List"],
+        loop: true
+    }
+]).then(async(answer) => {
+    if (answer.process == 'Show me the ToDo List') {
         tddb.read();
         const toDoList = [];
         tddb.get('ToDo').value().forEach(async(data) => toDoList.push(data.todo))
 
         if (toDoList.length == 0) {
             console.log('No item added to the ToDo List was found.');
-            rl.close();
         } else {
             toDoList.forEach(async(data) => console.log(data));
         }
-        rl.close();
-    } else if (Number(hcihy) == 2) {
-        rl.question('Type the item to be added to the ToDo List.\n', async(newItem) => {
+    } else if (answer.process == 'Add a New item to the ToDo List') {
+        inquirer.prompt([{
+            name: 'newitem',
+            message: 'Type the item to be added to the ToDo List.',
+            type: 'input',
+        }]).then(async(answer) => {
             tddb.read();
             var toDoList = [];
             tddb.get('ToDo').value().forEach(async(data) => toDoList.push(data.todo))
-            tddb.get('ToDo').push({ date: Date.now(), todo: '・'+newItem, id: toDoList.length+1 }).write();
+            tddb.get('ToDo').push({ date: Date.now(), todo: '・'+answer.newitem, id: toDoList.length+1 }).write();
 
             console.log('The new item has been successfully added to the ToDo List. New ToDo List;')
 
@@ -34,12 +43,15 @@ rl.question('Welcome back sir! How can i help you?\n\nShow me the ToDo List: 1\n
             tddb.read();
             tddb.get('ToDo').value().forEach(async(data) => toDoList.push(data.todo))
             toDoList.forEach(async(data) => console.log(data));
-            rl.close()
-        });
-    } else if (Number(hcihy) == 3) {
+        })
+    } else if (answer.process == 'Remove an item from the ToDo List') {
         tddb.read();
         tddb.get('ToDo').value().forEach(async(data) => console.log(`${data.todo}: ${data.id}`))
-        rl.question(`\nPlease enter the ID of the item to be deleted.\n`, async(id) => {
+        inquirer.prompt([{
+            name: 'remid',
+            message: 'Please enter the ID of the item to be deleted',
+            type: 'number'
+        }]).then(async(answer) => {
             tddb.read();
             const toDoList = [];
             tddb.get('ToDo').value().forEach(async(data) => toDoList.push({ todo: data.todo, id: data.id }));
@@ -47,16 +59,15 @@ rl.question('Welcome back sir! How can i help you?\n\nShow me the ToDo List: 1\n
             const ids = [];
             toDoList.forEach(async(data) => ids.push(data.id));
 
-            if (!ids.includes(Number(id))) {
+            if (!ids.includes(Number(answer.remid))) {
                 console.log('No such ToDo List item was found.')
-                rl.close()
+                return;
             };
 
             tddb.read();
-            await tddb.get('ToDo').remove({ id: Number(id) }).write();
+            await tddb.get('ToDo').remove({ id: answer.remid }).write();
 
-            console.log(`Item with ID ${id} has been successfully removed.`)
-            rl.close();
+            console.log(`Item with ID ${answer.remid} has been successfully removed.`)
         })
-    } else rl.close();
+    };
 });

@@ -7,4 +7,4 @@
 <img src="https://cdn.glitch.global/94f2a678-3ee3-404c-8e7b-c1db5925af52/start.png?v=1655813634374">
 <img src="https://cdn.glitch.global/94f2a678-3ee3-404c-8e7b-c1db5925af52/started.png?v=1655813637653">
 <img src="https://cdn.glitch.global/94f2a678-3ee3-404c-8e7b-c1db5925af52/started2.png?v=1655813642206">
-<img src="">
+<img src="https://cdn.glitch.global/94f2a678-3ee3-404c-8e7b-c1db5925af52/started4.png?v=1655814563339">

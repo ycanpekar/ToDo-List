@@ -46,28 +46,23 @@ inquirer.prompt([
         })
     } else if (answer.process == 'Remove an item from the ToDo List') {
         tddb.read();
-        tddb.get('ToDo').value().forEach(async(data) => console.log(`${data.todo}: ${data.id}`))
-        inquirer.prompt([{
-            name: 'remid',
-            message: 'Please enter the ID of the item to be deleted',
-            type: 'number'
-        }]).then(async(answer) => {
-            tddb.read();
-            const toDoList = [];
-            tddb.get('ToDo').value().forEach(async(data) => toDoList.push({ todo: data.todo, id: data.id }));
+        var toDoList = [];
+        tddb.get('ToDo').value().forEach(async(data) => toDoList.push(data.todo));
+        if (toDoList.length == 0) {
+            return console.log('No item added to the ToDo List was found.');
+        } else {
+            inquirer.prompt([{
+                name: 'delete',
+                message: 'Select the item to be deleted.',
+                type: 'list',
+                choices: toDoList
+            }]).then(async(answer) => {
+                tddb.read();
+                const todo = tddb.get('ToDo').find({ todo: answer.delete }).value();
+                await tddb.get('ToDo').remove({ id: todo.id }).write();
 
-            const ids = [];
-            toDoList.forEach(async(data) => ids.push(data.id));
-
-            if (!ids.includes(Number(answer.remid))) {
-                console.log('No such ToDo List item was found.')
-                return;
-            };
-
-            tddb.read();
-            await tddb.get('ToDo').remove({ id: answer.remid }).write();
-
-            console.log(`Item with ID ${answer.remid} has been successfully removed.`)
-        })
+                console.log('The item has been successfully deleted.');
+            });
+        }
     };
 });

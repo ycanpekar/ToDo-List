@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ToDo List - MiriJS",
   "main": "index.js",
   "scripts": {
@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/Yupe245/ToDo-List#readme",
   "dependencies": {
-    "lowdb": "^1.0.0",
-    "readline": "^1.3.0"
+    "inquirer": "^6.5.2",
+    "lowdb": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nukleon": "^0.0.2"
   }
 }

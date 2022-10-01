@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "version": "0.0.2",
+  "version": "0.2.2",
   "description": "ToDo List - MiriJS",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   "dependencies": {
     "inquirer": "^6.5.2",
     "lowdb": "^1.0.0"
-  },
-  "devDependencies": {
-    "nukleon": "^0.0.2"
   }
 }

@@ -14,6 +14,7 @@
     "MiriJS",
     "ToDo-List"
   ],
+  "type": "module",
   "author": "MiriJS",
   "license": "Apache-2.0",
   "bugs": {
